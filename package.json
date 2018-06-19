@@ -1,11 +1,27 @@
 {
   "name": "packcheck",
+  "description": "Linter for npm pack",
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
   "files": [
     "dist"
   ],
+  "homepage": "https://github.com/macklinu/packcheck",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/macklinu/packcheck.git"
+  },
+  "bugs": {
+    "url": "https://github.com/macklinu/packcheck/issues"
+  },
+  "keywords": [
+    "pack",
+    "npm pack"
+  ],
+  "engines": {
+    "node": ">=8"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "jest",
