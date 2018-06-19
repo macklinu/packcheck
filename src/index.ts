@@ -10,6 +10,9 @@ import mkdirp from './mkdirp'
 
 import { isBlacklisted, isJsConfig, isLockfile, isRc, isTest } from './is'
 
+let targz: string
+let dist: string
+
 async function npmPack(): Promise<string> {
   return execa('npm', ['pack', '--silent'])
     .then(({ code, stdout }) => {
@@ -29,24 +32,16 @@ function unpackPath(file: string): string {
   return path.join(os.tmpdir(), name)
 }
 
-async function setup(): Promise<{ targz: string; dist: string }> {
+async function cleanup(): Promise<void> {
+  targz && (await rimraf(targz))
+  dist && (await rimraf(dist))
+}
+
+async function main(): Promise<void> {
   const targz = await npmPack()
   const dist = unpackPath(targz)
   await mkdirp(dist)
-  return { targz, dist }
-}
 
-async function lint({
-  targz,
-  dist,
-}: {
-  targz: string
-  dist: string
-}): Promise<{
-  targz: string
-  dist: string
-  violations: string[]
-}> {
   const files = (await decompress(targz, dist, {
     plugins: [decompressTargz()],
   })).map(({ path }) => path.replace(/^package\//, ''))
@@ -63,40 +58,9 @@ async function lint({
     )
   })
 
-  return { violations, targz, dist }
-}
-
-async function log({
-  violations,
-  targz,
-  dist,
-}: {
-  targz: string
-  dist: string
-  violations: string[]
-}): Promise<{
-  targz: string
-  dist: string
-  violations: string[]
-}> {
   console.log(violations)
-
-  return { violations, targz, dist }
 }
 
-async function cleanup({
-  targz,
-  dist,
-}: {
-  targz: string
-  dist: string
-}): Promise<void> {
-  await rimraf(targz)
-  await rimraf(dist)
-}
-
-setup()
-  .then(lint)
-  .then(log)
+main()
   .then(cleanup)
   .catch(console.error)
