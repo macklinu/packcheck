@@ -38,8 +38,8 @@ async function cleanup(): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  const targz = await npmPack()
-  const dist = unpackPath(targz)
+  targz = await npmPack()
+  dist = unpackPath(targz)
   await mkdirp(dist)
 
   const files = (await decompress(targz, dist, {
