@@ -1,5 +1,5 @@
 import { parse, ParsedPath } from 'path'
-import { isConfig, isLockfile, isTest } from './is'
+import { isConfig, isLockfile, isTest, isIgnore } from './is'
 
 function generateTests(
   fn: (path: ParsedPath) => boolean,
@@ -33,4 +33,11 @@ generateTests(isLockfile, [
   ['yarn.lock', true],
   ['package-lock.json', true],
   ['nested/directory/yarn.lock', true],
+])
+
+generateTests(isIgnore, [
+  ['.eslintignore', true],
+  ['.prettierignore', true],
+  ['.gitignore', true],
+  ['ignore.js', false],
 ])

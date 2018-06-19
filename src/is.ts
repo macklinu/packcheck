@@ -30,3 +30,7 @@ export function isTest({ dir, base }: ParsedPath): boolean {
 export function isLockfile({ base }: ParsedPath): boolean {
   return base === 'yarn.lock' || base === 'package-lock.json'
 }
+
+export function isIgnore(path: ParsedPath): boolean {
+  return /^.*ignore$/.test(path.base)
+}

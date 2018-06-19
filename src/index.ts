@@ -10,7 +10,7 @@ import decompressTargz from 'decompress-targz'
 
 import rimraf from './rimraf'
 import mkdirp from './mkdirp'
-import { isLockfile, isConfig, isTest } from './is'
+import { isLockfile, isConfig, isTest, isIgnore } from './is'
 
 interface Violation {
   path: ParsedPath
@@ -54,6 +54,9 @@ function determineViolation(path: ParsedPath): Violation | undefined {
   }
   if (isTest(path)) {
     return { path, message: 'Test files are not necessary to ship' }
+  }
+  if (isIgnore(path)) {
+    return { path, message: 'Ignore files are not necessary to ship' }
   }
   return void 0
 }
