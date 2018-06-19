@@ -10,7 +10,7 @@ import decompressTargz from 'decompress-targz'
 
 import rimraf from './rimraf'
 import mkdirp from './mkdirp'
-import { isLockfile, isConfig, isTest, isIgnore } from './is'
+import { isLockfile, isConfig, isTest, isIgnore, isException } from './is'
 
 interface Violation {
   path: ParsedPath
@@ -68,14 +68,16 @@ async function main(): Promise<void> {
 
   let violations = (await decompress(targz, dist, {
     plugins: [decompressTargz()],
-  })).reduce(
-    (violations, { path }) => {
-      let parsedPath = parse(path.replace(/^package\//, ''))
-      let violation = determineViolation(parsedPath)
-      return violation ? [...violations, violation] : violations
-    },
-    [] as Violation[]
-  )
+  }))
+    .map(({ path }) => parse(path.replace(/^package\//, '')))
+    .filter(path => !isException(path))
+    .reduce(
+      (violations, path) => {
+        let violation = determineViolation(path)
+        return violation ? [...violations, violation] : violations
+      },
+      [] as Violation[]
+    )
 
   if (violations.length) {
     console.log('Violations found:\n')

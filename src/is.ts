@@ -5,6 +5,16 @@ const blacklistedConfigs: { [key: string]: boolean } = {
   'tsconfig.json': true,
 }
 
+const fileExceptions: { [key: string]: boolean } = {
+  readme: true,
+  changes: true,
+  license: true,
+  licence: true,
+  notice: true,
+  changelog: true,
+  history: true,
+}
+
 function isRc({ base }: ParsedPath): boolean {
   return /^\..*rc(.json|.js|.yml|.yaml)?$/.test(base)
 }
@@ -33,4 +43,11 @@ export function isLockfile({ base }: ParsedPath): boolean {
 
 export function isIgnore(path: ParsedPath): boolean {
   return /^.*ignore$/.test(path.base)
+}
+
+export function isException(path: ParsedPath): boolean {
+  return (
+    path.base === 'package.json' ||
+    (!path.dir && fileExceptions[path.name.toLowerCase()])
+  )
 }
