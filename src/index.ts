@@ -10,7 +10,7 @@ import decompressTargz from 'decompress-targz'
 
 import rimraf from './rimraf'
 import mkdirp from './mkdirp'
-import { isBlacklisted, isJsConfig, isLockfile, isRc, isTest } from './is'
+import { isLockfile, isConfig, isTest } from './is'
 
 interface Violation {
   path: ParsedPath
@@ -49,7 +49,7 @@ function determineViolation(path: ParsedPath): Violation | undefined {
   if (isLockfile(path)) {
     return { path, message: 'Lockfiles are not necessary to ship' }
   }
-  if (isRc(path) || isJsConfig(path) || isBlacklisted(path)) {
+  if (isConfig(path)) {
     return { path, message: 'Configuration files are not necessary to ship' }
   }
   if (isTest(path)) {

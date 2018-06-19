@@ -1,5 +1,5 @@
 import { parse, ParsedPath } from 'path'
-import { isBlacklisted, isJsConfig, isLockfile, isRc, isTest } from './is'
+import { isConfig, isLockfile, isTest } from './is'
 
 function generateTests(
   fn: (path: ParsedPath) => boolean,
@@ -13,18 +13,15 @@ function generateTests(
   )
 }
 
-generateTests(isBlacklisted, [['.editorconfig', true], ['tsconfig.json', true]])
-
-generateTests(isRc, [
+generateTests(isConfig, [
+  ['jest.config.js', true],
+  ['lint-staged.config.js', true],
   ['.eslintrc', true],
   ['.eslintrc.js', true],
   ['.eslintrc.json', true],
   ['.eslintrc.yaml', true],
-])
-
-generateTests(isJsConfig, [
-  ['jest.config.js', true],
-  ['lint-staged.config.js', true],
+  ['.editorconfig', true],
+  ['tsconfig.json', true],
 ])
 
 generateTests(isTest, [
