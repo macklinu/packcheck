@@ -2,7 +2,7 @@
   "name": "packcheck",
   "description": "Linter for npm pack",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "bin": "dist/index.js",
   "license": "MIT",
   "files": [
     "dist"
