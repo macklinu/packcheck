@@ -71,6 +71,10 @@ function determineViolation(path: ParsedPath): Violation | undefined {
   return void 0
 }
 
+function formatViolation({ path, message }: Violation): string {
+  return `* [${join(path.dir, path.base)}]: ${message}`
+}
+
 async function main(): Promise<void> {
   targz = await npmPack()
   dist = unpackPath(targz)
@@ -91,13 +95,7 @@ async function main(): Promise<void> {
 
   if (violations.length) {
     console.log('Violations found:\n')
-    console.log(
-      violations
-        .map(({ path, message }) => {
-          return `* [${join(path.dir, path.base)}]: ${message}`
-        })
-        .join('\n')
-    )
+    console.log(violations.map(formatViolation).join('\n'))
     exitCode = Math.min(violations.length, 255)
   } else {
     console.log('🎉 No violations!')
