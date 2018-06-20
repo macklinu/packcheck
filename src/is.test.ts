@@ -1,5 +1,12 @@
 import { parse, ParsedPath } from 'path'
-import { isConfig, isLockfile, isTest, isIgnore, isException } from './is'
+import {
+  isConfig,
+  isLockfile,
+  isTest,
+  isIgnore,
+  isException,
+  isMarkdown,
+} from './is'
 
 function generateTests(
   fn: (path: ParsedPath) => boolean,
@@ -77,4 +84,11 @@ generateTests(isException, [
   ['LICENCE.md', true],
   ['licence.md', true],
   ['some/nested/CHANGELOG', false],
+])
+
+generateTests(isMarkdown, [
+  ['CONTRIBUTING.md', true],
+  ['README.MARKDOWN', true],
+  ['some/nested/file/README.mdown', true],
+  ['markdown.js', false],
 ])

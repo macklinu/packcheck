@@ -15,6 +15,16 @@ const fileExceptions: { [key: string]: boolean } = {
   history: true,
 }
 
+const markdownExtensions: { [key: string]: boolean } = {
+  md: true,
+  markdown: true,
+  mdown: true,
+  mkdn: true,
+  mkd: true,
+  mdwn: true,
+  mkdown: true,
+}
+
 function isRc({ base }: ParsedPath): boolean {
   return /^\..*rc(.json|.js|.yml|.yaml)?$/.test(base)
 }
@@ -50,4 +60,8 @@ export function isException(path: ParsedPath): boolean {
     path.base === 'package.json' ||
     (!path.dir && fileExceptions[path.name.toLowerCase()])
   )
+}
+
+export function isMarkdown(path: ParsedPath): boolean {
+  return markdownExtensions[path.ext.slice(1).toLowerCase()] === true
 }
