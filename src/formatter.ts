@@ -1,6 +1,6 @@
 'use strict'
 
-import { join } from 'path'
+import { format } from 'path'
 import { Violation } from '.'
 
 export default function formatter(violations: Violation[]): string {
@@ -9,7 +9,7 @@ export default function formatter(violations: Violation[]): string {
       'Violations found:\n' +
       violations
         .map(({ path, message }) => {
-          return `* [${join(path.dir, path.base)}]: ${message}`
+          return `* [${format(path)}]: ${message}`
         })
         .join('\n')
     )
