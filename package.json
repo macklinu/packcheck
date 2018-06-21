@@ -2,7 +2,8 @@
   "name": "packcheck",
   "description": "Linter for npm pack",
   "version": "1.0.0",
-  "bin": "dist/index.js",
+  "bin": "dist/cli.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "files": [
     "dist"
@@ -32,7 +33,8 @@
     "decompress-targz": "^4.1.1",
     "execa": "^0.9.0",
     "mkdirp": "^0.5.1",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
     "@types/decompress": "^4.2.3",
@@ -41,6 +43,7 @@
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^10.3.3",
     "@types/rimraf": "^2.0.2",
+    "@types/yargs": "^11.0.0",
     "eslint": "^4.18.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-jest": "^21.12.2",
